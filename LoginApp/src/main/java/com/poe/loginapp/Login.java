@@ -1,7 +1,7 @@
 package com.poe.loginapp; 
 
 import java.util.regex.Pattern; 
-
+ 
 public class Login { private String registeredUsername, registeredPassword, firstName, lastName; 
 
 public boolean checkUserName(String username) { 
