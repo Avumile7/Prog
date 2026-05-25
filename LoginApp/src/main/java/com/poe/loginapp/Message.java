@@ -9,7 +9,7 @@ public class Message {
         return message != null && message.length() <= 250;
     }
 
-    // Method to automatically generate a random 10-digit numeric ID string
+    // Method to automatically generate a  random 10-digit numeric ID string
     public String generateMessageID() {
         Random rand = new Random();
         StringBuilder sb = new StringBuilder();
