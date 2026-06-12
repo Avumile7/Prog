@@ -131,3 +131,17 @@ public class LoginTest {
         assertEquals(expectedHash, actualHash);
     }
 }
+@Test
+    public void testSearchMessageByID_NotFound() {
+        Message msg = new Message();
+        // Searching an empty array system should return not found string
+        String result = msg.searchMessageByID("9999999999");
+        assertTrue(result.contains("not found"));
+    }
+
+    @Test
+    public void testDeleteMessageByID_NotFound() {
+        Message msg = new Message();
+        String result = msg.deleteMessageByID("0000000000");
+        assertTrue(result.contains("not found"));
+    }
