@@ -8,13 +8,20 @@ public class Main {
         Login auth = new Login();
         Message msgProcessor = new Message();
 
+        // Hardcoded Part 3 Test Data Input
+        msgProcessor.addMessageToArray("+27834557896", "Did you get the cake?", "Sent");
+        msgProcessor.addMessageToArray("+27838884567", "Where are you? You are late! I have asked you to be on time.", "Stored");
+        msgProcessor.addMessageToArray("+278344484567", "Yohoooo, I am at your gate.", "Disregard");
+        msgProcessor.addMessageToArray("0838884567", "It is dinner time !", "Sent");
+        msgProcessor.addMessageToArray("+27838884567", "Ok, I am leaving without you.", "Stored");
+
         System.out.println("--- Register ---");
         System.out.print("First Name: "); String fName = sc.nextLine();
         System.out.print("Last Name: "); String lName = sc.nextLine();
         System.out.print("Username: "); String user = sc.nextLine();
         System.out.print("Password: "); String pass = sc.nextLine();
         System.out.print("Cell (+27): "); String cell = sc.nextLine();
-        sc.nextLine();
+
         String regMsg = auth.registerUser(user, pass, fName, lName, cell);
         System.out.println("\n" + regMsg);
 
@@ -26,51 +33,63 @@ public class Main {
             boolean loginSuccessful = auth.loginUser(logU, logP);
             System.out.println(auth.returnLoginStatus(loginSuccessful));
 
-            // Part 2: QuickChat features run only upon successful login
             if (loginSuccessful) {
-                System.out.println("\nWelcome to QuickChat.");
-                
                 int choice = 0;
-                while (choice != 3) {
-                    System.out.println("\nPlease choose an option:");
-                    System.out.println("1) Send Messages");
-                    System.out.println("2) Show recently sent messages");
-                    System.out.println("3) Quit");
-                    System.out.print("Choice: ");
+                while (choice != 5) {
+                    System.out.println("\n--- MAIN MENU ---");
+                    System.out.println("1) Send a New Message");
+                    System.out.println("2) Stored Messages Options");
+                    System.out.println("5) Exit");
+                    System.out.print("Select an option: ");
                     
                     if (sc.hasNextInt()) {
                         choice = sc.nextInt();
-                        sc.nextLine(); // Clear scanner buffer
+                        sc.nextLine(); 
                         
-                        switch (choice) {
-                            case 1:
-                                // Option 1: Capture message details
-                                System.out.print("Enter recipient cell number: ");
-                                String recipient = sc.nextLine();
-                                
-                                System.out.print("Enter your message (max 250 characters): ");
-                                String textBody = sc.nextLine();
-                                
-                                // Process and print the result output
-                                String processResult = msgProcessor.processMessage(recipient, textBody);
-                                System.out.println("\n" + processResult);
-                                break;
-                                
-                            case 2:
-                                // Option 2: Requirements specify showing 'Coming Soon.'
-                                System.out.println("Coming Soon.");
-                                break;
-                                
-                            case 3:
-                                System.out.println("Exiting QuickChat. Goodbye!");
-                                break;
-                                
-                            default:
-                                System.out.println("Invalid option. Please select 1, 2, or 3.");
+                        if (choice == 1) {
+                            System.out.print("Enter recipient number: ");
+                            String rep = sc.nextLine();
+                            System.out.print("Enter message: ");
+                            String txt = sc.nextLine();
+                            System.out.print("Enter flag status (Sent/Stored/Disregard): ");
+                            String flg = sc.nextLine();
+                            System.out.println(msgProcessor.addMessageToArray(rep, txt, flg));
+                        } 
+                        else if (choice == 2) {
+                            System.out.println("\n--- STORED MESSAGES SUB-MENU ---");
+                            System.out.println("a) Display Longest Message");
+                            System.out.println("b) Search Message by ID");
+                            System.out.println("c) Search Messages by Recipient Phone");
+                            System.out.println("d) Delete Message by Hash");
+                            System.out.println("e) Display Full Report");
+                            System.out.print("Select task (a-e): ");
+                            String subChoice = sc.nextLine().toLowerCase();
+                            
+                            switch (subChoice) {
+                                case "a":
+                                    System.out.println("Longest Message: " + msgProcessor.displayLongestMessage());
+                                    break;
+                                case "b":
+                                    System.out.print("Enter Message ID: ");
+                                    System.out.println(msgProcessor.searchMessageByID(sc.nextLine()));
+                                    break;
+                                case "c":
+                                    System.out.print("Enter Recipient Number: ");
+                                    msgProcessor.searchByRecipient(sc.nextLine());
+                                    break;
+                                case "d":
+                                    System.out.print("Enter Message Hash to Delete: ");
+                                    System.out.println(msgProcessor.deleteByHash(sc.nextLine()));
+                                    break;
+                                case "e":
+                                    msgProcessor.displayReport();
+                                    break;
+                                default:
+                                    System.out.println("Invalid sub-menu option.");
+                            }
                         }
                     } else {
-                        System.out.println("Invalid input. Please enter a valid menu number.");
-                        sc.nextLine(); // Clear the bad input
+                        sc.nextLine();
                     }
                 }
             }
@@ -78,4 +97,3 @@ public class Main {
         sc.close();
     }
 }
-
